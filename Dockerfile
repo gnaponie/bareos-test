@@ -15,9 +15,8 @@ RUN dnf install -y bareos-client postgresql && \
 # copying the configurations
 COPY bareos-fd.conf /etc/bareos/bareos-fd.conf 
 RUN chown root:bareos /etc/bareos/bareos-fd.conf 
-RUN chmod 777 /etc/bareos/bareos-fd.conf
+RUN chmod ugo+rw /etc/bareos/bareos-fd.conf
 RUN chmod -R ugo+rw /etc/bareos
-#RUN chmod a+r /etc/bareos/bareos-fd.conf
 
 # copying the bash script
 COPY conf_script.sh /
