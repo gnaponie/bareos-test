@@ -20,4 +20,4 @@ ENTRYPOINT /conf_script.sh
 COPY bareos-fd.conf /etc/bareos/bareos-fd.conf 
 RUN chown root:bareos /etc/bareos/bareos-fd.conf 
 #RUN chmod 0640 /etc/bareos/bareos-fd.conf
-RUN chmod a+r /etc/bareos/bareos-fd.conf
+#RUN chmod a+r /etc/bareos/bareos-fd.conf
