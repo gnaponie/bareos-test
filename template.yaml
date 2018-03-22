@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: bareos-test
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      service: bareos-fd
+    name: bareos-fd
+  spec:
+    ports:
+    - name: bareos
+      port: 9103
+      protocol: TCP
+      targetPort: 9103
+    selector:
+      service: bareos-fd
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Route
+  metadata:
+    labels:
+      service: bareos-fd
+    name: bareos-fd
+    namespace: test-bareos
+  spec:
+    host: bareos-fd-test-bareos.int.open.paas.redhat.com
+    port:
+      targetPort: bareos
+    to:
+      kind: Service
+      name: bareos-fd
+      weight: 100
+    wildcardPolicy: None
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    generation: 1
+    labels:
+      app: waiverdb-bareos-fd
+      service: bareos-fd
+    name: waiverdb-bareos-fd
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      app: waiverdb-bareos-fd
+      deploymentconfig: waiverdb-bareos-fd
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: waiverdb-bareos-fd
+          deploymentconfig: waiverdb-bareos-fd
+      spec:
+        containers:
+        - env:
+          - name: DIRECTOR_PASSWORD
+            value: TOP_SECRET
+          - name: FD_NAME
+            value: waiverdb-fd
+          - name: DIRECTOR_NAME
+            value: bareos-director.host.stage.eng.rdu2.redhat.com-dir
+          image: 172.30.114.236:5000/test-bareos/waiverdb-bareos-fd@sha256:dd3604c4fd7f6b34ee82fd301bff0b4d59a3f8b715722c293b81bc08432cc642
+          imagePullPolicy: Always
+          name: waiverdb-bareos-fd
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - waiverdb-bareos-fd
+        from:
+          kind: ImageStreamTag
+          name: waiverdb-bareos-fd:latest
+          namespace: test-bareos
+      type: ImageChange
