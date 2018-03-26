@@ -17,8 +17,7 @@ RUN chown root:bareos /etc/bareos/bareos-fd.conf
 RUN chmod ugo+rw /etc/bareos/bareos-fd.conf
 RUN chmod -R ugo+rw /etc/bareos
 RUN touch /var/lib/bareos/bareos-fd.9102.pid
-RUN chown root:bareos /var/lib/bareos/bareos-fd.9102.pid
-RUN chmod ugo+rw /var/lib/bareos/bareos-fd.9102.pid
+RUN chmod 777 /var/lib/bareos/bareos-fd.9102.pid
 
 
 # copying the bash script
