@@ -16,8 +16,10 @@ COPY bareos-fd.conf /etc/bareos/bareos-fd.conf
 RUN chown root:bareos /etc/bareos/bareos-fd.conf 
 RUN chmod ugo+rw /etc/bareos/bareos-fd.conf
 RUN chmod -R ugo+rw /etc/bareos
-RUN chown -R root:bareos /var/lib/bareos
-RUN chmod -R ugo+rw /var/lib/bareos
+RUN touch /var/lib/bareos/bareos-fd.9102.pid
+RUN chown -R root:bareos /var/lib/bareos/bareos-fd.9102.pid
+RUN chmod -R ugo+rw /var/lib/bareos/bareos-fd.9102.pid
+
 
 # copying the bash script
 COPY conf_script.sh /
