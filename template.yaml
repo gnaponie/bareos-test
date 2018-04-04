@@ -74,7 +74,10 @@ objects:
         containers:
         - env:
           - name: DIRECTOR_PASSWORD
-            value: TOP_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: test-bareos-director
+                key: director-password
           - name: FD_NAME
             value: waiverdb-fd
           - name: DIRECTOR_NAME
