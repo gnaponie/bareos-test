@@ -3,7 +3,8 @@ FROM fedora:26
 
 ENV URL http://download.bareos.org/bareos/release/latest/Fedora_26
 RUN dnf -y update && \
-    dnf -y install wget
+    dnf -y install wget && \
+    dnf -y install netstat
 
 RUN wget -O /etc/yum.repos.d/bareos.repo $URL/bareos.repo 
 
