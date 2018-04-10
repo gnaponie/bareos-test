@@ -81,7 +81,7 @@ objects:
           - name: FD_NAME
             value: waiverdb-fd
           - name: DIRECTOR_NAME
-            value: bareos-director.host.stage.eng.rdu2.redhat.com-dir
+            value: bareos-director.host.stage.eng.rdu2.redhat.com
           image: 172.30.114.236:5000/test-bareos/waiverdb-bareos-fd@sha256:dd3604c4fd7f6b34ee82fd301bff0b4d59a3f8b715722c293b81bc08432cc642
           imagePullPolicy: Always
           name: waiverdb-bareos-fd
