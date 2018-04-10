@@ -6,7 +6,8 @@ ENV URL http://download.bareos.org/bareos/release/latest/Fedora_26
 RUN dnf -y install wget && \
     dnf -y install tcpdump && \
     dnf -y install hostname && \
-    dnf -y install iproute
+    dnf -y install iproute && \
+    dnf -y install bind-utils
 
 RUN wget -O /etc/yum.repos.d/bareos.repo $URL/bareos.repo 
 
